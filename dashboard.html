@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم الرئيسية</title>
+    <!-- استدعاء مكتبة Chart.js للرسوم البيانية -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-sidebar: #1e293b;
+            --text-sidebar: #94a3b8;
+            --text-sidebar-active: #ffffff;
+            --bg-card: #ffffff;
+            --primary: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-main: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- شريط الملاحة الجانبي --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            color: var(--text-sidebar);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 25px;
+            font-size: 20px;
+            color: #fff;
+            font-weight: bold;
+            border-bottom: 1px solid #334155;
+            text-align: center;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            padding: 15px 25px;
+            color: var(--text-sidebar);
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .sidebar-menu li a:hover, .sidebar-menu li.active a {
+            background-color: #334155;
+            color: var(--text-sidebar-active);
+            border-right: 4px solid var(--primary);
+        }
+
+        /* --- المحتوى الرئيسي --- */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- كروت الإحصائيات --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-trend {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+
+        /* --- قسم الرسم البياني والجداول --- */
+        .dashboard-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-section {
+                grid-template-columns: 1fr;
+            }
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        .section-box {
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* التنبيهات أو النشاطات الأخيرة */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: #94a3b8;
+            display: block;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شريط الملاحة الجانبي -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">لوحة تحكم الإدارة</div>
+        <ul class="sidebar-menu">
+            <li class="active"><a href="#">📊 الرئيسية</a></li>
+            <li><a href="sales.html">💰 المبيعات</a></li>
+            <li><a href="#">📦 المنتجات</a></li>
+            <li><a href="#">👥 المستخدمين</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+        </ul>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- الهيدر العلوي -->
+        <header class="header">
+            <div>
+                <h2>مرحباً بك مجدداً، مدير النظام 👋</h2>
+                <p style="color: #64748b; font-size: 14px;">إليك نظرة عامة على أداء اليوم.</p>
+            </div>
+            <div class="user-profile">
+                <span>أحمد علي</span>
+                <div class="user-avatar">أع</div>
+            </div>
+        </header>
+
+        <!-- كروت الإحصائيات السريعة -->
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-title">المشاهدات اليومية</div>
+                <div class="card-value">12.5K</div>
+                <div class="card-trend trend-up">▲ +12% مقارنة بأمس</div>
+            </div>
+            <div class="card">
+                <div class="card-title">المبيعات الشهرية</div>
+                <div class="card-value">$45,230</div>
+                <div class="card-trend trend-up">▲ +8% هذا الشهر</div>
+            </div>
+            <div class="card">
+                <div class="card-title">المستخدمين الجدد</div>
+                <div class="card-value">1,240</div>
+                <div class="card-trend trend-down">▼ -3% هذا الأسبوع</div>
+            </div>
+        </div>
+
+        <!-- قسم الرسم البياني والنشاطات -->
+        <div class="dashboard-section">
+            <!-- صندوق الرسم البياني -->
+            <div class="section-box">
+                <div class="section-title">مخطط نمو الأرباح لعام 2026</div>
+                <canvas id="analyticsChart" height="120"></canvas>
+            </div>
+
+            <!-- صندوق النشاطات الأخيرة -->
+            <div class="section-box">
+                <div class="section-title">آخر النشاطات</div>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        قام <strong>خالد العتيبي</strong> بشراء المنتج "هاتف ذكي"
+                        <span class="activity-time">منذ 5 دقائق</span>
+                    </li>
+                    <li class="activity-item">
+                        تم تسجيل مستخدم جديد <strong>سارة أحمد</strong>
+                        <span class="activity-time">منذ 20 دقيقة</span>
+                    </li>
+                    <li class="activity-item">
+                        تحديث إعدادات الأمان للنظام بنجاح
+                        <span class="activity-time">منذ ساعتين</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- كود الجافا سكريبت لتشغيل الرسم البياني تفاعلياً -->
+    <script>
+        const ctx = document.getElementById('analyticsChart').getContext('2d');
+        const analyticsChart = new Chart(ctx, {
+            type: 'line', // نوع الرسم البياني خطي
+            data: {
+                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو'],
+                datasets: [{
+                    label: 'الأرباح الكلية ($)',
+                    data: [12000, 19000, 3000, 5000, 22000, 30000, 45230],
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderColor: '#4f46e5',
+                    borderWidth: 3,
+                    tension: 0.3, // انحناء الخط
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: { family: 'Segoe UI' }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+  </html>
