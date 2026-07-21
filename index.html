@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل الدخول - نظام POS</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>إنشاء حساب جديد</h2>
+    <form action="admin/dashboard.html" method="GET">
+        <label>اسم المستخدم:</label>
+        <input type="text" required>
+        
+        <label>البريد الإلكتروني:</label>
+        <input type="email" required>
+        
+        <label>كلمة المرور:</label>
+        <input type="password" required>
+        
+        <button type="submit">إنشاء حساب ودخول</button>
+    </form>
+</div>
+
+</body>
+</html>
